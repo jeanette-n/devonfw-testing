@@ -1,23 +1,21 @@
-package com.capgemini.ntc.selenium.tests.tests.pages.demo.main.registration;
+package com.capgemini.ntc.selenium.tests.pages.demo.main.registration;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import com.capgemini.ntc.selenium.pages.enums.PageTitlesEnum;
 import com.capgemini.ntc.selenium.pages.features.registration.Hobby;
 import com.capgemini.ntc.selenium.pages.features.registration.MaritalStatus;
 import com.capgemini.ntc.selenium.pages.features.registration.RegistrationPage;
-import com.capgemini.ntc.selenium.tests.testSuites.testType.TestsSelenium;
-import com.capgemini.ntc.selenium.tests.tests.pages.demo.main.registration.utils.DataProviderInternal;
-import com.example.core.tests.core.BaseTest;
-import com.example.core.tests.testRunners.ParallelParameterized;
+import com.capgemini.ntc.selenium.tests.pages.demo.main.registration.utils.DataProviderInternal;
+import com.capgemini.ntc.test.core.BaseTest;
+import com.capgemini.ntc.test.core.testRunners.ParallelParameterized;
 
 import junitparams.Parameters;
 
-@Category({ TestsSelenium.class })
+//@Category({ TestsSelenium.class })
 @RunWith(ParallelParameterized.class)
 public class RegisterOKTestDDInternalDataTest extends BaseTest {
 

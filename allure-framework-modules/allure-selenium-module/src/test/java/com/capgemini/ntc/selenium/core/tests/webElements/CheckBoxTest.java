@@ -1,13 +1,11 @@
 package com.capgemini.ntc.selenium.core.tests.webElements;
 
-import com.capgemini.ntc.selenium.core.BasePage;
 import com.capgemini.ntc.selenium.core.newDrivers.elementType.CheckBox;
-import com.example.selenium.pages.enums.PageSubURLsEnum;
-import com.capgemini.ntc.selenium.core.testsuites.testType.TestsSelenium;
-import com.capgemini.ntc.test.core.tests.core.BaseTest;
+import com.capgemini.ntc.test.core.BaseTest;
+import com.capgemini.ntc.selenium.core.BasePage;
+import com.capgemini.ntc.selenium.core.enums.PageSubURLsEnum;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by LKURZAJ on 06.03.2017.
  */
-@Category(TestsSelenium.class)
+//@Category(TestsSelenium.class)
 public class CheckBoxTest extends BaseTest {
 
     private static final By hobbyCheckBoxSelector = By.cssSelector("li.fields.pageFields_1:nth-child(3) div.radio_wrap");

@@ -18,7 +18,7 @@ import com.capgemini.ntc.test.core.testRunners.core.CustomRunAfters;
 
 /**
  * Use this runner to run Selenium tests in parallel, with separate driver for each thread.
- * 
+ *
  * @author
  *
  */
@@ -41,7 +41,7 @@ public class ParallelTestClassRunner extends BlockJUnit4ClassRunner {
 		} catch (Throwable e) {
 			testNotifier.addFailure(e);
 		} finally {
-			DriverManager.closeDriver();
+//			DriverManager.closeDriver();
 		}
 	}
 

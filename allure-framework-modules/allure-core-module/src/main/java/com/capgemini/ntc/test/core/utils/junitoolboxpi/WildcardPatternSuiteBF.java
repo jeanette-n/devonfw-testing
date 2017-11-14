@@ -1,4 +1,4 @@
-package com.capgemini.ntc.test.core.tests.utils.junitoolboxpi;
+package com.capgemini.ntc.test.core.utils.junitoolboxpi;
 
 import java.io.*;
 import java.util.*;

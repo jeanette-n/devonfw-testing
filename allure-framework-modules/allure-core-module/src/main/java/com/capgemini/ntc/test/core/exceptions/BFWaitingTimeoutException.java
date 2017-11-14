@@ -1,7 +1,6 @@
 package com.capgemini.ntc.test.core.exceptions;
 
 import com.capgemini.ntc.test.core.logger.BFLogger;
-import com.example.selenium.core.BasePage;
 
 public class BFWaitingTimeoutException extends AssertionError {
 
@@ -11,25 +10,25 @@ public class BFWaitingTimeoutException extends AssertionError {
 	/**
 	 * This error should be thrown when time specified by {@link BasePage.PROGRESSBARWAITTIMER} has passed while waiting
 	 * for given component.
-	 * 
+	 *
 	 * Example: ProgressBar that gets displayed after clicking on Account in AccountSelector is loading longer than
 	 * expected. Calling "throw new BFWaitingTimeoutException("BorderedProgressBar")" is going to create error message:
 	 * "Timed out waiting [45] seconds for [BorderedProgressBar] to load."
-	 * 
+	 *
 	 * @param componentName
 	 */
 	public BFWaitingTimeoutException(String componentName) {
-		this(componentName, BasePage.PROGRESSBARWAITTIMER);
+//		this(componentName, BasePage.PROGRESSBARWAITTIMER);
 	}
 
 	/**
 	 * This error should be thrown when time specified by {@code timeout} parameter has passed while waiting for given
 	 * component.
-	 * 
+	 *
 	 * Example: ProgressBar that gets displayed after clicking on Account in AccountSelector is loading longer than 30
 	 * seconds. Calling "throw new BFWaitingTimeoutException("BorderedProgressBar", 30)" is going to create error
 	 * message: "Timed out waiting [30] seconds for [BorderedProgressBar] to load."
-	 * 
+	 *
 	 * @param componentName
 	 * @param timeout
 	 */

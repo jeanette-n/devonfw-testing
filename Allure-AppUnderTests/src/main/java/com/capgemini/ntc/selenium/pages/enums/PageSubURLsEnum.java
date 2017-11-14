@@ -1,6 +1,6 @@
 package com.capgemini.ntc.selenium.pages.enums;
 
-import com.capgemini.ntc.test.core.enums.SubUrl;
+import com.capgemini.ntc.selenium.core.enums.SubUrl;
 
 public enum PageSubURLsEnum implements SubUrl {
 
@@ -16,14 +16,14 @@ public enum PageSubURLsEnum implements SubUrl {
 			return ServicesURLsEnum.TOOLS_QA.getAddress();
 		}
 	},
-	
+
 	WEB_SERVICE {
 		@Override
 		public String subURL() {
 			return ServicesURLsEnum.WEB_SERVICE.getAddress();
 		}
 	},
-	
+
 	REGISTRATION("registration/"),
 	FRAMEANDWINDOWS("frames-and-windows/"),
 	MAIN_PAGE(""),

@@ -163,6 +163,12 @@
                 <artifactId>allure-cucumber-jvm-adaptor</artifactId>
             </dependency>
             
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>3.1</version>
+            </dependency>
+            
             
     </dependencies>    
 
@@ -174,5 +180,28 @@
             </plugins>
     </build>
 		
+    <profiles>
+        <profile>
+            <id>observers</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <configuration>
+                            <testExcludes>
+                                <exclude>**/cucumber/**</exclude>
+                                <exclude>**/readFromTable/**</exclude>
+                                <exclude>**/CardOrderWithDataDrivenTest.java</exclude>
+                            </testExcludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

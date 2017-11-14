@@ -1,17 +1,17 @@
-package com.capgemini.ntc.selenium.tests.tests.webElements;
+package com.capgemini.ntc.selenium.tests.webElements;
 
-import com.capgemini.ntc.selenium.core.BasePage;
-import com.capgemini.ntc.selenium.core.newDrivers.elementType.DropdownListElement;
-import com.capgemini.ntc.selenium.pages.enums.PageSubURLsEnum;
-import com.capgemini.ntc.selenium.tests.testSuites.testType.TestsSelenium;
-import com.example.core.tests.core.BaseTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import com.capgemini.ntc.selenium.core.BasePage;
+import com.capgemini.ntc.selenium.core.newDrivers.elementType.DropdownListElement;
+import com.capgemini.ntc.selenium.pages.enums.PageSubURLsEnum;
+import com.capgemini.ntc.selenium.testSuites.testType.TestsSelenium;
+import com.capgemini.ntc.test.core.BaseTest;
 
 /**
  * Created by LKURZAJ on 06.03.2017.

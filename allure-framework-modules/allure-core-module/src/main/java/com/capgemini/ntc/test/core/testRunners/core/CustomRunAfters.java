@@ -1,6 +1,5 @@
 package com.capgemini.ntc.test.core.testRunners.core;
 
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import com.capgemini.ntc.test.core.logger.BFLogger;
  * in our report. Using default JUnit RunAfters caused false report results in case test fails/breaks during AfterClass
  * execution. For example, when we execute 1 test and it fails during AfterClass, in report we will see 1 test passed
  * and 1 failed.
- * 
+ *
  * @author
  *
  */
@@ -47,7 +46,7 @@ public class CustomRunAfters extends Statement {
 					BFLogger.logError("There was an exception in @AfterClass " + each.getName() + ": " + e.toString());
 				}
 			}
-			DriverManager.closeDriver();
+//			DriverManager.closeDriver();
 		}
 		MultipleFailureException.assertEmpty(errors);
 	}

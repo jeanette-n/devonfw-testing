@@ -1,13 +1,13 @@
 package com.capgemini.ntc.selenium.pages.features.navigationbar;
 
+import org.openqa.selenium.By;
+
 import com.capgemini.ntc.selenium.core.BasePage;
 import com.capgemini.ntc.selenium.core.newDrivers.INewWebDriver;
-import com.example.core.logger.BFLogger;
 import com.capgemini.ntc.selenium.pages.enums.PageSubURLsEnum;
 import com.capgemini.ntc.selenium.pages.enums.PageTitlesEnum;
 import com.capgemini.ntc.selenium.pages.features.MainPage;
-
-import org.openqa.selenium.By;
+import com.capgemini.ntc.test.core.logger.BFLogger;
 
 public class NavigationBar extends BasePage {
 

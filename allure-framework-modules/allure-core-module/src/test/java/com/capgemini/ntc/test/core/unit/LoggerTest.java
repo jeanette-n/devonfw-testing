@@ -1,12 +1,11 @@
-package com.capgemini.ntc.test.core.tests.unit;
+package com.capgemini.ntc.test.core.unit;
 
 import static org.junit.Assert.*;
 
 import org.junit.*;
 
+import com.capgemini.ntc.test.core.BaseTest;
 import com.capgemini.ntc.test.core.logger.BFLogger;
-import com.capgemini.ntc.test.core.tests.core.BaseTest;
-import com.example.selenium.core.utils.TimeUtills;
 
 public class LoggerTest extends BaseTest {
 
@@ -21,7 +20,7 @@ public class LoggerTest extends BaseTest {
 		BFLogger.logDebug("Debug-TestPassed");
 		BFLogger.logError("Error-TestPassed");
 		BFLogger.logInfo("Info-TestPassed");
-		TimeUtills.waitSeconds(2);
+//		TimeUtils.waitSeconds(2);
 	}
 
 	@Test

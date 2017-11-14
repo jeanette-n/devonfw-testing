@@ -1,16 +1,18 @@
-package com.capgemini.ntc.selenium.tests.tests.webElements;
+package com.capgemini.ntc.selenium.tests.webElements;
 
-import com.capgemini.ntc.selenium.core.BasePage;
-import com.capgemini.ntc.selenium.core.newDrivers.elementType.MenuElement;
-import com.capgemini.ntc.selenium.pages.enums.PageSubURLsEnum;
-import com.capgemini.ntc.selenium.tests.testSuites.testType.TestsSelenium;
-import com.example.core.tests.core.BaseTest;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
-import java.util.Arrays;
-import static org.junit.Assert.assertEquals;
+
+import com.capgemini.ntc.selenium.core.BasePage;
+import com.capgemini.ntc.selenium.core.newDrivers.elementType.MenuElement;
+import com.capgemini.ntc.selenium.pages.enums.PageSubURLsEnum;
+import com.capgemini.ntc.selenium.testSuites.testType.TestsSelenium;
+import com.capgemini.ntc.test.core.BaseTest;
 
 /**
  * Created by LKURZAJ on 08.03.2017.

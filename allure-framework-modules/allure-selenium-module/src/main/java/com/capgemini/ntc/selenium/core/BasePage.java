@@ -16,9 +16,6 @@ import com.capgemini.ntc.selenium.core.exceptions.BFElementNotFoundException;
 import com.capgemini.ntc.selenium.core.newDrivers.DriverManager;
 import com.capgemini.ntc.selenium.core.newDrivers.INewWebDriver;
 import com.capgemini.ntc.selenium.core.utils.WindowUtils;
-import com.capgemini.ntc.test.core.base.environments.EnvironmentServices;
-import com.capgemini.ntc.test.core.base.environments.ParametersManager;
-import com.capgemini.ntc.test.core.base.environments.RuntimeParameters;
 import com.capgemini.ntc.test.core.logger.BFLogger;
 
 
@@ -31,27 +28,27 @@ abstract public class BasePage implements IBasePage {
 	// wait for JavaScript take effort on element
 	public static final int EXPLICITY_SHORT_WAIT_TIME = 1;
 
-	public static final int PROGRESSBARWAITTIMER = 60; 
+	public static final int PROGRESSBARWAITTIMER = 60;
 	// in seconds. timer used in findDynamicElement
 	public static final int EXPLICITYWAITTIMER = 20;
 
 	public static final int MAX_COMPONENT_RELOAD_COUNT = 3;
 
-	private static DriverManager driverManager = null;
+//	private static DriverManager driverManager = null;
 	private static WebDriverWait webDriverWait;
-	
-	
+
+
 	private BasePage parent;
 
-	
+
 	public BasePage() {
 		this(getDriver(), null);
 	}
-	
+
 	public BasePage(BasePage parent) {
 		this(getDriver(), parent);
 	}
-	
+
 	public BasePage(INewWebDriver driver, BasePage parent) {
 		webDriverWait = new WebDriverWait(getDriver(), BasePage.EXPLICITYWAITTIMER);
 
@@ -78,7 +75,7 @@ abstract public class BasePage implements IBasePage {
 
 	/**
 	 * Navigates to previous site (works like pressing browsers 'Back' button)
-	 * 
+	 *
 	 * @param andWait
 	 *            - wait for progress bars to load if true
 	 */
@@ -88,39 +85,41 @@ abstract public class BasePage implements IBasePage {
 	}
 
 	public static INewWebDriver getDriver() {
-		if (driverManager == null) {
-			
-			pico = 
-			
-			driverManager = new DriverManager(ParametersManager.INSTANCE);
-			EnvironmentServices.INSTANCE;
-			RuntimeParameters.INSTANCE;
-			
-			
-			
-			
-		}
-		return driverManager.getDriver();
-//		return DriverManager.getDriver();
+//		if (driverManager == null) {
+//
+//			pico =
+//
+//			driverManager = new DriverManager(ParametersManager.INSTANCE);
+//			EnvironmentServices.INSTANCE;
+//			RuntimeParameters.INSTANCE;
+//
+//
+//
+//
+//		}
+//		return driverManager.getDriver();
+		return DriverManager.getDriver();
 	}
 
-	public static String getDefaultUsername() {
-		return defaultUsernames.get();
-	}
-
-	public static void setDefaultUsername(String username) {
-		defaultUsernames.set(username);
-	}
+//	public static String getDefaultUsername() {
+//		return defaultUsernames.get();
+//	}
+//
+//	public static void setDefaultUsername(String username) {
+//		defaultUsernames.set(username);
+//	}
 
 	public static Actions getAction() {
 		return new Actions(getDriver());
 	}
 
-	public void setParent(BasePage parent) {
+	@Override
+    public void setParent(BasePage parent) {
 		this.parent = parent;
 	}
 
-	public BasePage getParent() {
+	@Override
+    public BasePage getParent() {
 		return this.parent;
 	}
 
@@ -193,7 +192,7 @@ abstract public class BasePage implements IBasePage {
 	/**
 	 * Recomended to use. It is method to check is element visible. If element not exists in DOM , method throw
 	 * PiAtElementNotFoundException
-	 * 
+	 *
 	 * @throws BFElementNotFoundException
 	 * @param cssSelector
 	 * @return false if element have an attribute displayed = none, otherwise return true;
@@ -209,7 +208,7 @@ abstract public class BasePage implements IBasePage {
 	/**
 	 * It is method to check is element visible. It search element inside parent. If element not exists in DOM , method
 	 * throw PiAtElementNotFoundException
-	 * 
+	 *
 	 * @throws BFElementNotFoundException
 	 * @param cssSelector
 	 * @param parent
@@ -225,7 +224,7 @@ abstract public class BasePage implements IBasePage {
 
 	/**
 	 * Check if given selector is displayed on the page and it contain a specific text
-	 * 
+	 *
 	 * @param cssSelector
 	 * @param text
 	 * @return true if a given element is displayed with a specific text
@@ -246,7 +245,7 @@ abstract public class BasePage implements IBasePage {
 
 	/**
 	 * Check if given selector is displayed on the page
-	 * 
+	 *
 	 * @param selector
 	 * @param parent
 	 * @return true if a given element is displayed
@@ -261,7 +260,7 @@ abstract public class BasePage implements IBasePage {
 
 	/**
 	 * Check if given selector is displayed on the page
-	 * 
+	 *
 	 * @param selector
 	 * @return true if a given element is displayed
 	 */
@@ -304,7 +303,7 @@ abstract public class BasePage implements IBasePage {
 
 	/**
 	 * Open link in new tab
-	 * 
+	 *
 	 * @param url
 	 */
 	public static void openInNewTab(String url) {

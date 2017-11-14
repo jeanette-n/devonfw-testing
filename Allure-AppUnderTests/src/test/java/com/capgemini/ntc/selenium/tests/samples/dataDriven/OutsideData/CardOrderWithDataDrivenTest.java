@@ -2,9 +2,12 @@ package com.capgemini.ntc.selenium.tests.samples.dataDriven.OutsideData;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.function.Function;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

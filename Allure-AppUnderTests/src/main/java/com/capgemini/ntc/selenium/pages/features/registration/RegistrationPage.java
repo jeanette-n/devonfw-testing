@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
-import com.example.core.logger.BFLogger;
 import com.capgemini.ntc.selenium.core.BasePage;
 import com.capgemini.ntc.selenium.core.exceptions.BFElementNotFoundException;
 import com.capgemini.ntc.selenium.core.newDrivers.INewWebDriver;
@@ -13,6 +12,7 @@ import com.capgemini.ntc.selenium.core.newDrivers.elementType.DropdownListElemen
 import com.capgemini.ntc.selenium.core.newDrivers.elementType.InputTextElement;
 import com.capgemini.ntc.selenium.pages.enums.PageSubURLsEnum;
 import com.capgemini.ntc.selenium.pages.enums.PageTitlesEnum;
+import com.capgemini.ntc.test.core.logger.BFLogger;
 
 public class RegistrationPage extends BasePage {
 
@@ -37,8 +37,8 @@ public class RegistrationPage extends BasePage {
 	private final static By selectorSubmitButton = By.cssSelector("input[name='pie_submit']");
 	private final static By selectorRegistrationSucceed = By.cssSelector("p[class='piereg_message']");
 	private final static By selectorRegistrationError = By.cssSelector("p[class='piereg_login_error']");
-	
-	
+
+
 
 	private static String registrationSucceedText = "Thank you for your registration";
 	private static String registrationErrorText = "Error: Username already exists";
@@ -64,7 +64,7 @@ public class RegistrationPage extends BasePage {
 		return isUrlAndPageTitleAsCurrentPage(PageSubURLsEnum.REGISTRATION);
 	}
 
-	
+
 
 	@Override
 	public void load() {
@@ -77,11 +77,13 @@ public class RegistrationPage extends BasePage {
 		loaded = true;
 	}
 
-	public BasePage getParent() {
+	@Override
+    public BasePage getParent() {
 		return this.parent;
 	}
 
-	public void setParent(BasePage parent) {
+	@Override
+    public void setParent(BasePage parent) {
 		this.parent = parent;
 	}
 
@@ -100,7 +102,7 @@ public class RegistrationPage extends BasePage {
 			return false;
 		}
 	}
-	
+
 	public boolean isRegistryErrorTextVisible() {
 		try{
 			getDriver().waitForElementVisible(selectorRegistrationError);

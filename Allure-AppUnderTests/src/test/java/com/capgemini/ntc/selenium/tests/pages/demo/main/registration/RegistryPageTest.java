@@ -1,12 +1,17 @@
-package com.capgemini.ntc.selenium.tests.tests.pages.demo.main.registration;
+package com.capgemini.ntc.selenium.tests.pages.demo.main.registration;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import org.junit.*;
 
-import com.example.core.logger.BFLogger;
-import com.example.core.tests.core.BaseTest;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.capgemini.ntc.selenium.pages.features.registration.RegistryPage;
+import com.capgemini.ntc.test.core.BaseTest;
+import com.capgemini.ntc.test.core.logger.BFLogger;
 
 public class RegistryPageTest extends BaseTest {
 
@@ -19,12 +24,14 @@ public class RegistryPageTest extends BaseTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
-	@Before
+	@Override
+    @Before
 	public void setUp() {
 		BFLogger.logInfo("[Step 1] As a standard user I will open Registry Page,  So that my I can fill data");
 		registryPage = new RegistryPage();
 	}
-	@After
+	@Override
+    @After
 	public void tearDown() {
 	}
 	@Test

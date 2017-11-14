@@ -1,6 +1,6 @@
 package com.capgemini.ntc.selenium.pages.enums;
 
-import static com.example.core.base.environments.ParametersManager.environment;
+import static com.capgemini.ntc.test.core.base.environments.ParametersManager.environment;
 
 public enum ServicesURLsEnum {
 	WWW_FONT_URL,
