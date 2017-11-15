@@ -5,10 +5,12 @@ import java.net.MalformedURLException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.RunWith;
 
+import com.capgemini.ntc.test.core.BaseTestWatcher.TestClassRule;
 import com.capgemini.ntc.test.core.testRunners.ParallelTestClassRunner;
 
 @RunWith(ParallelTestClassRunner.class)
@@ -40,7 +42,7 @@ public abstract class BaseTest implements IBaseTest {
 
 	@After
 	public void tearDownTestLast() {
-		
+
 	}
 
 	@Override
@@ -52,6 +54,6 @@ public abstract class BaseTest implements IBaseTest {
 	@Rule
 	public TestWatcher testWatcher = new BaseTestWatcher(this);
 
-	
-
+	@ClassRule
+	public static TestClassRule classRule = new TestClassRule();
 }

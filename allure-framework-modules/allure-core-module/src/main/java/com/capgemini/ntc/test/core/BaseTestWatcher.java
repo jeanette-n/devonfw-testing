@@ -1,17 +1,11 @@
 package com.capgemini.ntc.test.core;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.AssumptionViolatedException;
+import org.junit.rules.ExternalResource;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.MultipleFailureException;
@@ -22,7 +16,30 @@ import com.capgemini.ntc.test.core.logger.BFLogger;
 import ru.yandex.qatools.allure.annotations.Attachment;
 
 public class BaseTestWatcher extends TestWatcher {
-	private BaseTest baseTest;
+
+    private static ThreadLocal<List<TestObserver>> observers = new ThreadLocal<List<TestObserver>>() {
+	    @Override
+        protected List<TestObserver> initialValue() {
+	        return new ArrayList<>();
+	    };
+	};
+
+	public static class TestClassRule extends ExternalResource {
+
+	    private static ThreadLocal<List<TestObserver>> classObservers = new ThreadLocal<List<TestObserver>>() {
+	        @Override
+	        protected java.util.List<TestObserver> initialValue() {
+	            return new ArrayList<>();
+	        };
+	    };
+
+	    @Override
+	    protected void after() {
+	        classObservers.get().clear();
+	    }
+	}
+
+    private BaseTest baseTest;
 
 	public BaseTestWatcher(BaseTest baseTest) {
 		this.baseTest = baseTest;
@@ -85,6 +102,11 @@ public class BaseTestWatcher extends TestWatcher {
 		baseTest.tearDown(); // Executed as a After for each test
 //		makeLogForTest(); // Finish logging and add created log as an Allure attachment
 
+		// Run observers
+		TestClassRule.classObservers.get().forEach(TestObserver::onTestFinish);
+		observers.get().forEach(TestObserver::onTestFinish);
+		// Clear observers for single test
+		observers.get().clear();
 	}
 
 	@Override
@@ -92,6 +114,10 @@ public class BaseTestWatcher extends TestWatcher {
 		this.iStart = System.currentTimeMillis() - this.iStart; // end timing
 		printTimeExecutionLog(description);
 		BFLogger.logInfo(description.getDisplayName() + " PASSED.");
+
+		// Run test observers
+		TestClassRule.classObservers.get().forEach(TestObserver::onTestSuccess);
+		observers.get().forEach(TestObserver::onTestSuccess);
 	}
 
 	private void printTimeExecutionLog(Description description) {
@@ -104,75 +130,44 @@ public class BaseTestWatcher extends TestWatcher {
 		this.iStart = System.currentTimeMillis() - this.iStart; // end timing
 		printTimeExecutionLog(description);
 		BFLogger.logInfo(description.getDisplayName() + " FAILED.");
-//		makeScreenshotOnFailure();
-//		makeSourcePageOnFailure();
 
-		// uncommment for manual/demo tests
-		// saveScreenshot(description);
-		// savePageSource(description);
+        // Run test observers
+        TestClassRule.classObservers.get().forEach(TestObserver::onTestFailure);
+        observers.get().forEach(TestObserver::onTestFailure);
 	}
 
-//	@Attachment("Screenshot on failure")
-//	public byte[] makeScreenshotOnFailure() {
-//		byte[] screenshot = null;
-//		try {
-//			screenshot = ((TakesScreenshot) DriverManager.getDriver()).getScreenshotAs(OutputType.BYTES);
-//		} catch (UnhandledAlertException e) {
-//			BFLogger.logDebug("[makeScreenshotOnFailure] Unable to take screenshot.");
-//		}
-//		return screenshot;
-//	}
-//
-//	@Attachment("Source Page on failure")
-//	public String makeSourcePageOnFailure() {
-//		return DriverManager.getDriver().getPageSource();
-//	}
-//
 //	@Attachment("Log file")
 //	public String makeLogForTest() {
-//		return BFLogger.RestrictedMethods.dumpSeparateLog();
-//	}
-//
-//	private File getDestinationFile(String directoryName, String testName, String fileType) {
-//		String userDirectory = "./test-output/" + directoryName; // TODO: Setup correct directory where we will be
-//																	// saving tests reports
-//		File directory = new File(userDirectory);
-//		if (!directory.exists()) {
-//			directory.mkdir();
-//		}
-//		String fileName = testName + getCurrentTime() + "." + fileType;
-//		String absoluteFileName = userDirectory + "/" + fileName;
-//		return new File(absoluteFileName);
-//	}
-//
-//	private String getCurrentTime() {
-//		SimpleDateFormat sdf = new SimpleDateFormat("__dd-MM-yyyy__HH-mm-ss");
-//		Date date = new Date();
-//		return sdf.format(date);
-//	}
-//
-//	private void saveScreenshot(Description description) {
-//		TakesScreenshot takesScreenshot = (TakesScreenshot) DriverManager.getDriver();
-//		File screenshotFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
-//		File destFile = getDestinationFile(description.getClassName(), description.getDisplayName(), "png");
-//		try {
-//			FileUtils.copyFile(screenshotFile, destFile);
-//			BFLogger.logDebug("Screenshot saved in: " + destFile.getPath());
-//		} catch (IOException ioe) {
-//			BFLogger.logDebug("Screenshot could not be saved: " + ioe.getMessage());
-//			throw new RuntimeException(ioe);
-//		}
-//	}
-//
-//	private void savePageSource(Description description) {
-//		String pageSource = DriverManager.getDriver().getPageSource();
-//		File destFile = getDestinationFile(description.getClassName(), description.getDisplayName(), "html");
-//		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(destFile, false)))) {
-//			out.println(pageSource);
-//			BFLogger.logDebug("Page source saved in: " + destFile.getPath());
-//		} catch (IOException e) {
-//			BFLogger.logDebug("Page source could not be saved: " + e.getMessage());
-//		}
+//	    return BFLogger.RestrictedMethods.dumpSeparateLog();
 //	}
 
+    public static void addObserver(TestObserver observer) {
+        if (isAddedFromBeforeClassMethod()) {
+            TestClassRule.classObservers.get().add(observer);
+        } else {
+            observers.get().add(observer);
+        }
+
+    }
+
+    private static boolean isAddedFromBeforeClassMethod() {
+        for (StackTraceElement elem : Thread.currentThread().getStackTrace()) {
+            try {
+                Method method = Class.forName(elem.getClassName()).getDeclaredMethod(elem.getMethodName());
+                if (method.getDeclaredAnnotation(org.junit.BeforeClass.class) != null) {
+                    // Adding from BeforeClass-annotated method
+                    return true;
+                }
+            } catch (SecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                continue;
+            }
+        }
+        return false;
+    }
 }

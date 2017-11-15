@@ -1,28 +1,40 @@
 package com.capgemini.ntc.selenium.core;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.runner.Description;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.capgemini.ntc.selenium.core.enums.PageSubURLsEnum;
-import com.capgemini.ntc.selenium.core.enums.ResolutionEnum;
 import com.capgemini.ntc.selenium.core.enums.SubUrl;
 import com.capgemini.ntc.selenium.core.exceptions.BFElementNotFoundException;
 import com.capgemini.ntc.selenium.core.newDrivers.DriverManager;
 import com.capgemini.ntc.selenium.core.newDrivers.INewWebDriver;
 import com.capgemini.ntc.selenium.core.utils.WindowUtils;
+import com.capgemini.ntc.test.core.BaseTestWatcher;
+import com.capgemini.ntc.test.core.TestObserver;
 import com.capgemini.ntc.test.core.logger.BFLogger;
 
+import ru.yandex.qatools.allure.annotations.Attachment;
 
 
-abstract public class BasePage implements IBasePage {
 
-
+abstract public class BasePage implements IBasePage, TestObserver {
 
 	// in seconds; this value should be used for very shot delay purpose e.g. to
 	// wait for JavaScript take effort on element
@@ -42,15 +54,18 @@ abstract public class BasePage implements IBasePage {
 
 
 	public BasePage() {
-		this(getDriver(), null);
+		this(/*getDriver(), */null);
 	}
 
-	public BasePage(BasePage parent) {
-		this(getDriver(), parent);
-	}
+//	public BasePage(BasePage parent) {
+//		this(getDriver(), parent);
+//	}
 
-	public BasePage(INewWebDriver driver, BasePage parent) {
-		webDriverWait = new WebDriverWait(getDriver(), BasePage.EXPLICITYWAITTIMER);
+	public BasePage(/*INewWebDriver driver, */BasePage parent) {
+
+	    BaseTestWatcher.addObserver(this);
+
+//		webDriverWait = new WebDriverWait(getDriver(), BasePage.EXPLICITYWAITTIMER);
 
 		this.setParent(parent);
 
@@ -310,6 +325,81 @@ abstract public class BasePage implements IBasePage {
 		JavascriptExecutor js = (JavascriptExecutor) BasePage.getDriver();
 		js.executeScript("window.open(arguments[0], '_blank');", url);
 		WindowUtils.switchWindow(url, true);
+	}
+
+	@Override
+	public void onTestFailure() {
+	    BFLogger.logDebug("BasePage.onTestFailure");
+	    makeScreenshotOnFailure();
+	    makeSourcePageOnFailure();
+	}
+
+	@Override
+	public void onTestSuccess() {
+	    BFLogger.logDebug("BasePage.onTestSuccess");
+	}
+
+	@Override
+	public void onTestFinish() {
+	    BFLogger.logDebug("BasePage.onTestFinish");
+	}
+
+	@Attachment("Screenshot on failure")
+	public byte[] makeScreenshotOnFailure() {
+	    byte[] screenshot = null;
+	    try {
+	        screenshot = ((TakesScreenshot) DriverManager.getDriver()).getScreenshotAs(OutputType.BYTES);
+	    } catch (UnhandledAlertException e) {
+	        BFLogger.logDebug("[makeScreenshotOnFailure] Unable to take screenshot.");
+	    }
+	    return screenshot;
+	}
+
+	@Attachment("Source Page on failure")
+	public String makeSourcePageOnFailure() {
+	    return DriverManager.getDriver().getPageSource();
+	}
+
+	private File getDestinationFile(String directoryName, String testName, String fileType) {
+	    String userDirectory = "./test-output/" + directoryName; // TODO: Setup correct directory where we will be
+	    // saving tests reports
+	    File directory = new File(userDirectory);
+	    if (!directory.exists()) {
+	        directory.mkdir();
+	    }
+	    String fileName = testName + getCurrentTime() + "." + fileType;
+	    String absoluteFileName = userDirectory + "/" + fileName;
+	    return new File(absoluteFileName);
+	}
+
+	private String getCurrentTime() {
+	    SimpleDateFormat sdf = new SimpleDateFormat("__dd-MM-yyyy__HH-mm-ss");
+	    Date date = new Date();
+	    return sdf.format(date);
+	}
+
+	private void saveScreenshot(Description description) {
+	    TakesScreenshot takesScreenshot = (TakesScreenshot) DriverManager.getDriver();
+	    File screenshotFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
+	    File destFile = getDestinationFile(description.getClassName(), description.getDisplayName(), "png");
+	    try {
+	        FileUtils.copyFile(screenshotFile, destFile);
+	        BFLogger.logDebug("Screenshot saved in: " + destFile.getPath());
+	    } catch (IOException ioe) {
+	        BFLogger.logDebug("Screenshot could not be saved: " + ioe.getMessage());
+	        throw new RuntimeException(ioe);
+	    }
+	}
+
+	private void savePageSource(Description description) {
+	    String pageSource = DriverManager.getDriver().getPageSource();
+	    File destFile = getDestinationFile(description.getClassName(), description.getDisplayName(), "html");
+	    try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(destFile, false)))) {
+	        out.println(pageSource);
+	        BFLogger.logDebug("Page source saved in: " + destFile.getPath());
+	    } catch (IOException e) {
+	        BFLogger.logDebug("Page source could not be saved: " + e.getMessage());
+	    }
 	}
 
 }
