@@ -7,7 +7,7 @@ import com.capgemini.ntc.selenium.pages.enums.PageTitlesEnum;
 public class NavBarHome extends BasePage {
 
 	public NavBarHome(BasePage parent) {
-		super(getDriver(), parent);
+		super(/*getDriver(), */parent);
 	}
 
 	@Override

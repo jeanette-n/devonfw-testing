@@ -14,7 +14,7 @@ public class NavigationBar extends BasePage {
 	private static final By selectorNavBarHome = By.cssSelector("li[id='menu-item-38']");
 
 	public NavigationBar(INewWebDriver driver, MainPage parent) {
-		super(driver, parent);
+		super(/*driver, */parent);
 	}
 
 	@Override

@@ -9,11 +9,11 @@ import com.capgemini.ntc.selenium.pages.features.navigationbar.NavigationBar;
 public class MainPage extends BasePage {
 
 	public MainPage() {
-		this(getDriver(), null);
+		this(/*getDriver(), */null);
 	}
 
-	public MainPage(INewWebDriver driver, BasePage parent) {
-		super(driver, parent);
+	public MainPage(/*INewWebDriver driver, */BasePage parent) {
+		super(/*driver, */parent);
 	}
 
 	private BasePage parent;

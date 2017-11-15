@@ -45,12 +45,12 @@ public class RegistrationPage extends BasePage {
 
 	private final String pattern = "(.*)-(.*)-(.*)";
 
-	public RegistrationPage() {
-		this(getDriver());
-	}
+//	public RegistrationPage() {
+//		this(getDriver());
+//	}
 
-	public RegistrationPage(INewWebDriver driver) {
-		super(driver, null);
+	public RegistrationPage(/*INewWebDriver driver*/) {
+		super(/*driver, */null);
 
 		// Execute for current page
 		if (!this.isLoaded()) { // In this scenario check if current page is loaded, if not, then try to
